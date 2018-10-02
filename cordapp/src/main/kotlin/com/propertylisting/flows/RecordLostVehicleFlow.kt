@@ -26,7 +26,7 @@ class RecordLostVehicleFlow(
         private val custParty : Party,
         private val emailId : String,
         private val mobileNumber : String,
-        private val vehicleId : Int,
+        private val vehicleNumber : String,
         private val recReason : String) : FlowLogic<SignedTransaction?>() {
 
     companion object {
@@ -59,7 +59,7 @@ class RecordLostVehicleFlow(
                 custName = custParty,
                 emailId = emailId,
                 mobileNo = mobileNumber,
-                carId = vehicleId,
+                carNumber = vehicleNumber,
                 recReason = recReason,
                 recParty = me)
 

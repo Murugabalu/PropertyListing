@@ -18,7 +18,7 @@ object PolicySchema1 : MappedSchema(
     class PolicyData(
 
             @Column(name = "pol_number")
-            var polNumber: Int,
+            var polNumber: String,
 
             @Column(name = "ins_name")
             var insName: String,
@@ -29,8 +29,8 @@ object PolicySchema1 : MappedSchema(
             @Column(name = "ins_mobile")
             var insMobile: String,
 
-            @Column(name = "vehicle_id")
-            var vehicleId: Int,
+            @Column(name = "vehicle_number")
+            var vehicleNumber: String,
 
             @Column(name = "pol_premium")
             var polPremium: Int,
@@ -48,6 +48,6 @@ object PolicySchema1 : MappedSchema(
             var linearId: UUID
 
     ) : PersistentState() {
-        constructor(): this(0,"","","",0,0,"","","", UUID.randomUUID())
+        constructor(): this("","","","","",0,"","","", UUID.randomUUID())
     }
 }

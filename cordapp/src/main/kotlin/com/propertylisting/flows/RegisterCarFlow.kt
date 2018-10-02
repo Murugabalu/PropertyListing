@@ -3,7 +3,6 @@ package com.propertylisting.flows
 import co.paralleluniverse.fibers.Suspendable
 import com.propertylisting.contracts.CarContract
 import com.propertylisting.contracts.CarContract.Companion.CAR_CONTRACT_ID
-import com.propertylisting.flows.utils.FlowHelper
 import com.propertylisting.states.CarState
 import net.corda.core.contracts.Command
 import net.corda.core.flows.*
@@ -16,7 +15,7 @@ import net.corda.core.flows.FinalityFlow
 
 @StartableByRPC
 class RegisterCarFlow(
-        val carNumber : Int,
+        val carNumber : String,
         val emailId : String,
         val mobileNumber : String,
         val make : String,

@@ -1,0 +1,36 @@
+flow start RegisterCarFlow carNumber: "TN18AB0183", emailId: "smbalu@gmail.com", mobileNumber: "8434244064", make: "Suzuki", model: "Swift Dizire", price: 500000
+flow start RegisterCarFlow carNumber: "TN18AB0264", emailId: "smbalu@gmail.com", mobileNumber: "8434244064", make: "Audi", model: "A6", price: 500000
+
+run vaultQuery contractStateType: com.propertylisting.states.CarState
+run vaultQuery contractStateType: com.propertylisting.states.PolicyState
+run vaultQuery contractStateType: com.propertylisting.states.RecordLostState
+run vaultQuery contractStateType: com.propertylisting.states.ClaimState
+
+flow start ApplyInsuranceFlow$InsuranceInitiator vehicleNumber: "TN18AB0183"
+flow start ApplyInsuranceFlow$InsuranceInitiator vehicleNumber: "TN18AB0264"
+
+flow start RecordLostVehicleFlow recNumber: 1, custParty: "O=PartyA, L=London, C=GB", emailId: "smbalu@gmail.com", mobileNumber: "8434244064", vehicleNumber: "TN18AB0183", recReason: "Lost"
+flow start RecordLostVehicleFlow recNumber: 2, custParty: "O=PartyA, L=London, C=GB", emailId: "smbalu@gmail.com", mobileNumber: "8434244064", vehicleNumber: "TN18AB0264", recReason: "Damaged"
+
+flow start MakeClaimFlow$ClaimInitiator policyNumber: "PRI6OK3QF8", claimReason: "Lost"
+flow start MakeClaimFlow$ClaimInitiator policyNumber: "0X19MX4916", claimReason: "Damaged"
+
+Register Car:
+localhost:10007/api/propertyListing/registerCar?carNumber=TN18MS0183&emailId=smbalu@gmail.com&mobileNumber=8438244064&make=Audi&model=A7&price=50000
+
+Apply Insurance:
+localhost:10007/api/propertyListing/applyInsurance?vehicleNumber=TN18MS0183
+
+Record Lost Vehicles:
+localhost:10010/api/propertyListing/recordLostVehicle?recNumber=3&custName=O=PartyA, L=London, C=GB&emailId=smbalu@gmail.com&mobileNumber=8438244064&vehicleId=TN18MS0183&recReason=Damaged
+
+Claim Policy:
+localhost:10007/api/propertyListing/makeClaim?policyNumber=JOJ7WRNCPD&claimReason=Damaged
+
+Get,
+Registered cars:
+localhost:10007/api/propertyListing/registeredVehicles
+Policies
+localhost:10007/api/propertyListing/policies
+Claims
+localhost:10007/api/propertyListing/claims

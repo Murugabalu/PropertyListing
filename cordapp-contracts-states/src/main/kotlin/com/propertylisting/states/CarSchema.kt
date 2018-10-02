@@ -19,7 +19,7 @@ object CarSchema1 : MappedSchema(
     class CarData(
 
             @Column(name="car_number")
-            var carNumber: Int,
+            var carNumber: String,
 
             @Column(name = "owner")
             var owner: String,
@@ -46,6 +46,6 @@ object CarSchema1 : MappedSchema(
             var linearId: UUID
 
     ) : PersistentState() {
-        constructor(): this(0,"","","","","",0L,"", UUID.randomUUID())
+        constructor(): this("","","","","","",0L,"", UUID.randomUUID())
     }
 }

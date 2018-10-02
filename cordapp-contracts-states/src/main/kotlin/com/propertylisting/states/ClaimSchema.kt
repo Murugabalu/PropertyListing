@@ -19,10 +19,10 @@ object ClaimSchema1 : MappedSchema(
     class ClaimData(
 
             @Column(name="claim_number")
-            var claimNum: Int,
+            var claimNum: String,
 
             @Column(name = "pol_number")
-            var polNumber: Int,
+            var polNumber: String,
 
             @Column(name = "ins_name")
             var insName: String,
@@ -37,6 +37,6 @@ object ClaimSchema1 : MappedSchema(
             var linearId: UUID
 
     ) : PersistentState() {
-        constructor(): this(0,0,"","",0, UUID.randomUUID())
+        constructor(): this("","","","",0, UUID.randomUUID())
     }
 }

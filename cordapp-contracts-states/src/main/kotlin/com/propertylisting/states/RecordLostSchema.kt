@@ -30,8 +30,8 @@ object RecordLostSchema1 : MappedSchema(
             @Column(name = "mobile")
             var mobile: String,
 
-            @Column(name = "vehicle_id")
-            var vehicleId: Int,
+            @Column(name = "vehicle_Number")
+            var vehicleNumber: String,
 
             @Column(name = "record_reason")
             var recReason: String,
@@ -40,6 +40,6 @@ object RecordLostSchema1 : MappedSchema(
             var linearId: UUID
 
     ) : PersistentState() {
-        constructor(): this(0,"","","",0,"", UUID.randomUUID())
+        constructor(): this(0,"","","","","", UUID.randomUUID())
     }
 }

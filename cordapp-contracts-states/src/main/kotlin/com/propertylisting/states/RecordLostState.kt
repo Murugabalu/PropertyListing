@@ -14,7 +14,7 @@ data class RecordLostState(
         val custName: Party,
         val emailId: String,
         val mobileNo: String,
-        val carId: Int,
+        val carNumber: String,
         val recReason: String,
         val recParty: Party,
         override val linearId: UniqueIdentifier = UniqueIdentifier()) : LinearState, QueryableState {
@@ -28,7 +28,7 @@ data class RecordLostState(
                     this.custName.name.toString(),
                     this.emailId,
                     this.mobileNo,
-                    this.carId,
+                    this.carNumber,
                     this.recReason,
                     this.linearId.id
             )

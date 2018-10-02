@@ -64,7 +64,7 @@ class PropertyListingApi(private val rpcOps: CordaRPCOps) {
 
     @POST
     @Path("registerCar")
-    fun carRegistration(@QueryParam("carNumber") carNumber: Int,
+    fun carRegistration(@QueryParam("carNumber") carNumber: String,
                          @QueryParam("emailId") emailId: String,
                          @QueryParam("mobileNumber") mobileNumber: String,
                          @QueryParam("make") make: String,
@@ -84,10 +84,10 @@ class PropertyListingApi(private val rpcOps: CordaRPCOps) {
 
     @POST
     @Path("applyInsurance")
-    fun applyInsurance(@QueryParam("vehicleId") vehicleId: Int): Response
+    fun applyInsurance(@QueryParam("vehicleNumber") vehicleNumber: String): Response
     {
         return try {
-            val signedTx = rpcOps.startTrackedFlow(::InsuranceInitiator, vehicleId).returnValue.getOrThrow()
+            val signedTx = rpcOps.startTrackedFlow(::InsuranceInitiator, vehicleNumber).returnValue.getOrThrow()
             if(signedTx == null)
                 Response.status(HttpStatus.CONFLICT_409).entity("Property with this address is already registered.").build()
             else
@@ -99,7 +99,7 @@ class PropertyListingApi(private val rpcOps: CordaRPCOps) {
 
     @POST
     @Path("makeClaim")
-    fun makeClaim(@QueryParam("policyNumber") policyNumber: Int,
+    fun makeClaim(@QueryParam("policyNumber") policyNumber: String,
                   @QueryParam("claimReason") claimReason: String): Response
     {
         return try {
@@ -119,7 +119,7 @@ class PropertyListingApi(private val rpcOps: CordaRPCOps) {
                         @QueryParam("custName") custName: CordaX500Name,
                         @QueryParam("emailId") emailId: String,
                         @QueryParam("mobileNumber") mobileNumber: String,
-                        @QueryParam("vehicleId") vehicleId: Int,
+                        @QueryParam("vehicleId") vehicleId: String,
                         @QueryParam("recReason") recReason: String): Response
     {
         return try {

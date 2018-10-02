@@ -3,12 +3,11 @@ package com.propertylisting.flows
 import co.paralleluniverse.fibers.Suspendable
 import com.propertylisting.contracts.CarContract
 import com.propertylisting.contracts.PolicyContract
-import com.propertylisting.flows.RegisterCarFlow
+import com.propertylisting.flows.FlowHelper.getRandomPolicyNumber
 import com.propertylisting.states.CarState
 import com.propertylisting.states.PolicyState
 import com.propertylisting.states.RecordLostState
 import net.corda.core.contracts.Command
-import net.corda.core.contracts.Requirements.using
 import net.corda.core.contracts.StateAndRef
 import net.corda.core.contracts.requireThat
 import net.corda.core.flows.*
@@ -24,7 +23,7 @@ object ApplyInsuranceFlow {
 
     @InitiatingFlow
     @StartableByRPC
-    class InsuranceInitiator(val vehicleId : Int) : FlowLogic<SignedTransaction>() {
+    class InsuranceInitiator(val vehicleNumber : String) : FlowLogic<SignedTransaction>() {
 
         companion object {
             object GENERATING_TRANSACTION : ProgressTracker.Step("Generating transaction based on new IOU.")
@@ -59,10 +58,12 @@ object ApplyInsuranceFlow {
             val carPage = serviceHub.vaultService.queryBy(CarState::class.java)
 
             val inpCarRef: StateAndRef<CarState> = carPage.states.stream().filter {
-                                                        e -> e.state.data.carNumber == vehicleId
+                                                        e -> e.state.data.carNumber == vehicleNumber
                                                         }.findAny().orElseThrow<IllegalArgumentException?> {
                                                             IllegalArgumentException("No car found for given vehicle Id")
                                                             }
+
+            println("Car found inside Vault")
 
             val inpCar : CarState = inpCarRef.state.data
 
@@ -81,13 +82,15 @@ object ApplyInsuranceFlow {
             val expiry = nextYear.format(formatter)
 
             val polStatus = "Un Claimed"
-
+            println("Coming here")
+            println("Random Number:" + getRandomPolicyNumber())
+            println("Coming here after Random")
             val policyState = PolicyState (
-                    polNumber = 1,
+                    polNumber = getRandomPolicyNumber(),
                     insName = insurer,
                     insEmail = outCar.emailId,
                     insMobile = outCar.mobileNo,
-                    vehicleId = outCar.carNumber,
+                    vehicleNumber = outCar.carNumber,
                     polPremium = polPremium.toInt(),
                     polIssueDate = issueDate,
                     polExpiryDate = expiry,
@@ -151,7 +154,7 @@ object ApplyInsuranceFlow {
                     println("Rec lost paged")
 
                     val recLostRef: Boolean = recLostPage.states.stream().filter {
-                                        e -> e.state.data.carId == carObj.carNumber
+                                        e -> e.state.data.carNumber == carObj.carNumber
                                         }.findAny().isPresent
                     println(recLostRef)
 

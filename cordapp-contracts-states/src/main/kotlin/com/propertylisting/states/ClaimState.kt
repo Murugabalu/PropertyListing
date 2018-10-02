@@ -10,8 +10,8 @@ import net.corda.core.schemas.QueryableState
 
 data class ClaimState(
 
-        val claimNumber: Int,
-        val polNumber: Int,
+        val claimNumber: String,
+        val polNumber: String,
         val insName: Party,
         val claimReason: String,
         val claimedAmount: Int,

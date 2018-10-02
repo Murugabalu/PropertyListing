@@ -1,16 +1,13 @@
 package com.propertylisting.flows
 
 import co.paralleluniverse.fibers.Suspendable
-import com.propertylisting.contracts.CarContract
 import com.propertylisting.contracts.ClaimContract
 import com.propertylisting.contracts.PolicyContract
-import com.propertylisting.flows.RegisterCarFlow
-import com.propertylisting.states.CarState
+import com.propertylisting.flows.FlowHelper.getRandomClaimNumber
 import com.propertylisting.states.ClaimState
 import com.propertylisting.states.PolicyState
 import com.propertylisting.states.RecordLostState
 import net.corda.core.contracts.Command
-import net.corda.core.contracts.Requirements.using
 import net.corda.core.contracts.StateAndRef
 import net.corda.core.contracts.requireThat
 import net.corda.core.flows.*
@@ -19,14 +16,12 @@ import net.corda.core.identity.Party
 import net.corda.core.transactions.SignedTransaction
 import net.corda.core.transactions.TransactionBuilder
 import net.corda.core.utilities.ProgressTracker
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 object MakeClaimFlow {
 
     @InitiatingFlow
     @StartableByRPC
-    class ClaimInitiator(val policyNumber : Int,
+    class ClaimInitiator(val policyNumber : String,
                     val claimReason : String) : FlowLogic<SignedTransaction>() {
 
         companion object {
@@ -80,7 +75,7 @@ object MakeClaimFlow {
                                         insName = inpPolicy.insName,
                                         insEmail =  inpPolicy.insEmail,
                                         insMobile = inpPolicy.insMobile,
-                                        vehicleId = inpPolicy.vehicleId,
+                                        vehicleNumber = inpPolicy.vehicleNumber,
                                         polPremium = inpPolicy.polPremium,
                                         polIssueDate = inpPolicy.polIssueDate,
                                         polExpiryDate = inpPolicy.polExpiryDate,
@@ -96,7 +91,7 @@ object MakeClaimFlow {
             val issuer = serviceHub.identityService.wellKnownPartyFromX500Name(CordaX500Name.parse("O=PartyB,L=New York,C=US"))
 
             val claimState = ClaimState (
-                    claimNumber = 1,
+                    claimNumber = getRandomClaimNumber(),
                     polNumber = policyNumber,
                     insName = insurer,
                     claimReason = claimReason,
@@ -159,7 +154,7 @@ object MakeClaimFlow {
                     println("Rec lost paged")
 
                     val recLostRef: Boolean = recLostPage.states.stream().filter {
-                                                e -> e.state.data.carId == polObj.vehicleId
+                                                e -> e.state.data.carNumber == polObj.vehicleNumber
                                                 }.findAny().isPresent
                     println(recLostRef)
 

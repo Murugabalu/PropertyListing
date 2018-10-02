@@ -10,11 +10,11 @@ import net.corda.core.schemas.QueryableState
 
 data class PolicyState(
 
-        val polNumber: Int,
+        val polNumber: String,
         val insName: Party,
         val insEmail: String,
         val insMobile: String,
-        var vehicleId: Int,
+        var vehicleNumber: String,
         val polPremium: Int,
         val polIssueDate: String,
         val polExpiryDate: String,
@@ -31,7 +31,7 @@ data class PolicyState(
                     this.insName.name.toString(),
                     this.insEmail,
                     this.insMobile,
-                    this.vehicleId,
+                    this.vehicleNumber,
                     this.polPremium,
                     this.polIssueDate,
                     this.polExpiryDate,

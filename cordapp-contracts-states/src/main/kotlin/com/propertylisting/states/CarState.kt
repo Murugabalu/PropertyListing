@@ -10,7 +10,7 @@ import net.corda.core.schemas.QueryableState
 
 data class CarState(
 
-        val carNumber: Int,
+        val carNumber: String,
         val owner: Party,
         val emailId: String,
         val mobileNo: String,
